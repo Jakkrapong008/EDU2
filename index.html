@@ -148,6 +148,16 @@
                             <label class="block text-gray-700 mb-2">ชื่อ</label>
                             <input type="text" id="name" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300">
                         </div>
+
+                        <div>
+                            <label class="block text-gray-700 mb-2">สถานะ</label>
+                            <select id="statusFilter" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-300">
+                                <option value="">ทั้งหมด</option>
+                                <option value="ครู">ครู</option>
+                                <option value="ผู้บริหาร">ผู้บริหาร</option>
+                                <option value="เจ้าหน้าที่สำนักงาน">เจ้าหน้าที่สำนักงาน</option>
+                            </select>
+                        </div>
                         
                         <div>
                             <label class="block text-gray-700 mb-2">สังกัด</label>
@@ -493,6 +503,7 @@
         function filterData() {
             const activityType = document.getElementById('activityType').value;
             const name = document.getElementById('name').value.toLowerCase();
+            const statusFilter = document.getElementById('statusFilter').value.toLowerCase(); // Get value from new status filter
             const department = document.getElementById('department').value.toLowerCase();
             const level = document.getElementById('level').value.toLowerCase();
             const activityFormat = document.getElementById('activityFormat').value.toLowerCase();
@@ -506,6 +517,7 @@
                 // Get values from specific columns (adjust indices if your spreadsheet structure changes)
                 const rowActivityType = (row[4] || '').toString().toLowerCase(); // Column E: ประเภทกิจกรรม
                 const rowName = (row[1] || '').toString().toLowerCase();         // Column B: ชื่อ
+                const rowStatus = (row[2] || '').toString().toLowerCase();       // Column C: สถานะ (Existing column, now used for filter)
                 const rowDepartment = (row[3] || '').toString().toLowerCase();   // Column D: สังกัด
                 const rowLevel = (row[8] || '').toString().toLowerCase();        // Column I: ระดับ
                 const rowFormat = (row[11] || '').toString().toLowerCase();      // Column L: รูปแบบกิจกรรม
@@ -515,6 +527,7 @@
                 // Apply filters based on input values
                 if (activityType && !rowActivityType.includes(activityType.toLowerCase())) return false;
                 if (name && !rowName.includes(name)) return false;
+                if (statusFilter && !rowStatus.includes(statusFilter)) return false; // Apply new status filter
                 if (department && !rowDepartment.includes(department)) return false;
                 if (level && !rowLevel.includes(level)) return false;
                 if (activityFormat && !rowFormat.includes(activityFormat)) return false;
@@ -1167,6 +1180,7 @@
                 // Clear all search input fields
                 document.getElementById('activityType').value = '';
                 document.getElementById('name').value = '';
+                document.getElementById('statusFilter').value = ''; // Clear new status filter
                 document.getElementById('department').value = '';
                 document.getElementById('level').value = '';
                 document.getElementById('activityFormat').value = '';
